@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Multi Step Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Xác thực tài khoản</h2>
+
+    <div class="steps">
+        <div class="step active">1</div>
+        <div class="arrow">➜</div>
+        <div class="step">2</div>
+        <div class="arrow">➜</div>
+        <div class="step">3</div>
+        <div class="arrow">➜</div>
+        <div class="step">4</div>
+    </div>
+
+    <form id="multiForm">
+
+        <!-- STEP 1 -->
+        <div class="step-content active">
+            <h3>Bước 1: Cập nhật thông tin cá nhân</h3>
+            <label>Họ tên</label>
+            <input type="text">
+
+            <label>Số điện thoại</label>
+            <input type="number">
+
+            <label>Địa chỉ</label>
+            <input type="text">
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-content">
+            <h3>Bước 2: Cập nhật CCCD</h3>
+
+            <div class="cccd-row">
+                <div>
+                    <label>Mặt trước</label>
+                    <input type="file" accept="image/*"
+                        onchange="previewImage(this,'frontPreview')">
+                    <img id="frontPreview" class="preview">
+                </div>
+
+                <div>
+                    <label>Mặt sau</label>
+                    <input type="file" accept="image/*"
+                        onchange="previewImage(this,'backPreview')">
+                    <img id="backPreview" class="preview">
+                </div>
+            </div>
+            <div>
+                <label>Họ tên</label>
+                <input type="text" id="cccdName">
+
+                <label>Số căn cước công dân</label>
+                <input type="number" id="cccdNumber">
+
+                <label>Địa chỉ</label>
+                <input type="text" id="cccdAddress">
+
+                <label>Ngày cấp</label>
+                <input type="date" id="cccdDate">
+            </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-content">
+            <h3>Bước 3: Cập nhật chữ ký</h3>
+
+            <label>Tải lên hình ảnh chữ ký</label>
+            <input type="file" accept="image/*"
+                onchange="previewImage(this,'imgSign')">
+            <img id="imgSign" class="preview-img">
+
+            <p>Ký trực tiếp (Tùy chọn)</p>
+            <div class="signature-box">
+                <canvas id="signaturePad"></canvas>
+            </div>
+
+            <button type="button" class="btn-danger" onclick="clearSignature()">
+                Xóa chữ ký
+            </button>
+
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step-content">
+            <h3>Xác nhận thông tin</h3>
+            <p>Vui lòng kiểm tra lại thông tin trước khi gửi</p>
+
+            <!-- Hàng 1: Họ tên + CCCD -->
+            <div class="review-row">
+                <div class="review-item">
+                    <label>Họ tên</label>
+                    <input type="text" id="reviewName" readonly>
+                </div>
+                <div class="review-item">
+                    <label>Số CCCD</label>
+                    <input type="text" id="reviewCccd" readonly>
+                </div>
+            </div>
+
+            <!-- Hàng 2: Địa chỉ -->
+            <div class="review">
+                <label>Địa chỉ</label>
+                <input type="text" id="reviewAddress" readonly>
+            </div>
+
+            <!-- Hàng 3: Chữ ký -->
+            <div class="review">
+                <label>Chữ ký</label>
+                <img id="reviewSign" class="preview-img">
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button id="btnBack" type="button">Quay lại</button>
+            <button id="btnNext" type="button">Tiếp theo</button>
+        </div>
+
+    </form>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
