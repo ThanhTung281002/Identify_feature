@@ -175,6 +175,48 @@ button {
     flex-direction: column;
 }
 
+/* Wrapper căn giữa */
+.buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Nút chung */
+.buttons button {
+    padding: 10px 25px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0 10px; /* khoảng cách giữa hai nút */
+}
+
+/* Nút Quay lại */
+#btnBack {
+    background-color: #f2eeee;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+#btnBack:hover {
+    background-color: #ddd;
+}
+
+#btnNext {
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+#btnNext:hover {
+    background-color: #ddd;
+}
+
+/* Hiệu ứng nhấn nút */
+.buttons button:active {
+    transform: scale(0.97);
+}
+
 /* Animation nhẹ */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-2px); }
