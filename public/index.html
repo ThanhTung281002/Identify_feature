@@ -30,7 +30,7 @@
             <input type="text">
 
             <label>Số điện thoại</label>
-            <input type="number">
+            <input type="text" id="phone">
 
             <label>Địa chỉ</label>
             <input type="text">
@@ -60,7 +60,7 @@
                 <input type="text" id="cccdName">
 
                 <label>Số căn cước công dân</label>
-                <input type="number" id="cccdNumber">
+                <input type="text" id="cccdNumber">
 
                 <label>Địa chỉ</label>
                 <input type="text" id="cccdAddress">
@@ -75,7 +75,7 @@
             <h3>Bước 3: Cập nhật chữ ký</h3>
 
             <label>Tải lên hình ảnh chữ ký</label>
-            <input type="file" accept="image/*"
+            <input type="file" id="signImage" accept="image/*"
                 onchange="previewImage(this,'imgSign')">
             <img id="imgSign" class="preview-img">
 
@@ -88,6 +88,8 @@
                 Xóa chữ ký
             </button>
 
+            <div class="signature-error"></div>
+            
         </div>
 
         <!-- STEP 4 -->

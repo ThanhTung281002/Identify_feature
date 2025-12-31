@@ -21,7 +21,7 @@ function showStep(i) {
 
 /* Next / Back */
 btnNext.onclick = () => {
-    // if (!validateStep(currentStep)) return;
+    if (!validateStep(currentStep)) return;
 
     // Nếu Step 3 → Step 4, fill dữ liệu
     if (currentStep === 2) {
@@ -85,6 +85,14 @@ function clearSignature() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+function isCanvasEmpty(canvas) {
+    const blank = document.createElement("canvas");
+    blank.width = canvas.width;
+    blank.height = canvas.height;
+
+    return canvas.toDataURL() === blank.toDataURL();
+}
+
 /* Fill dữ liệu vào Step 4 */
 function fillReviewData() {
     // Step 2
@@ -115,8 +123,105 @@ function fillReviewData() {
 function submitForm() {
     const form = document.getElementById("multiForm");
     const data = new FormData(form);
-    console.log("Dữ liệu gửi:", Object.fromEntries(data.entries()));
-    alert("Gửi thành công!");
+
+    // Chuyển FormData sang JSON
+    const jsonData = Object.fromEntries(data.entries());
+
+    // Gửi dữ liệu lên server
+    fetch("/submit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsonData)
+    })
+    .then(res => res.json())
+    .then(resData => {
+        console.log("Server trả về:", resData);
+        alert("Gửi thành công!");
+        // Reset form hoặc quay về step đầu nếu muốn
+        form.reset();
+        window.location.href = "success.html"; // chuyển sang trang success
+        currentStep = 0;
+        showStep(currentStep);
+    })
+    .catch(err => {
+        console.error("Lỗi gửi dữ liệu:", err);
+        alert("Xác thực thất bại!");
+    });
+}
+
+function validateStep(stepIndex) {
+    const step = document.querySelectorAll(".step-content")[stepIndex];
+
+    // ===== STEP 3: chữ ký hoặc ảnh =====
+    if (stepIndex === 2) {
+        const fileInput = document.getElementById("signImage");
+        const errorBox = document.querySelector(".signature-error");
+
+        errorBox.innerText = "";
+
+        const hasImage = fileInput && fileInput.files.length > 0;
+        const hasSignature = !isCanvasEmpty(canvas);
+
+        if (!hasImage && !hasSignature) {
+            errorBox.innerText = "Vui lòng tải ảnh chữ ký hoặc ký trực tiếp!";
+            return false;
+        }
+
+        return true;
+    }
+
+    // ===== Các step khác =====
+    const inputs = step.querySelectorAll("input");
+
+    for (let input of inputs) {
+        input.classList.remove("input-error");
+
+        const oldError = input.parentElement.querySelector(".error-text");
+        if (oldError) oldError.remove();
+
+        const value = input.value.trim();
+
+        // ❌ rỗng
+        if (!value) {
+            showError(input, "Vui lòng nhập thông tin");
+            return false;
+        }
+
+        // 📞 Phone
+        if (input.id === "phone") {
+            const phoneRegex = /^0\d{9,10}$/;
+            if (!phoneRegex.test(value)) {
+                showError(input, "Số điện thoại không hợp lệ (10–11 số)");
+                return false;
+            }
+        }
+
+        // 🪪 CCCD
+        if (input.id === "cccdNumber") {
+            const cccdRegex = /^\d{12}$/;
+            if (!cccdRegex.test(value)) {
+                showError(input, "CCCD phải đủ 12 số");
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+function showError(input, message) {
+    input.classList.add("input-error");
+
+    const oldError = input.parentElement.querySelector(".error-text");
+    if (oldError) oldError.remove();
+
+    const error = document.createElement("div");
+    error.className = "error-text";
+    error.innerText = message;
+
+    input.parentElement.appendChild(error);
 }
 
 showStep(0);

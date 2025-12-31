@@ -193,28 +193,43 @@ button {
 
 /* Nút Quay lại */
 #btnBack {
-    background-color: #f2eeee;
-    color: #333;
-    border: 1px solid #ccc;
+    background-color: transparent;
+    color: #2f2a5a;
+    border: 1px solid #2f2a5a;
 }
 
 #btnBack:hover {
-    background-color: #ddd;
-}
-
-#btnNext {
-    background-color: #f1f1f1;
-    color: #333;
-    border: 1px solid #ccc;
-}
-
-#btnNext:hover {
-    background-color: #ddd;
+    background-color: rgba(21, 10, 119, 0.08);
+    color: #2f2a5a
 }
 
 /* Hiệu ứng nhấn nút */
-.buttons button:active {
+#btnBack:active {
     transform: scale(0.97);
+    background-color: rgba(47, 42, 90, 0.16);
+}
+
+/* Nút Tiếp theo */
+#btnNext {
+    background-color: #f7931e;
+    color: #fff;
+    border: 1px solid #2f2a5a;
+    margin-left: auto; /* đẩy sang phải */
+}
+
+#btnNext:hover {
+    background-color: #e67e00;
+}
+
+#btnNext:active {
+    transform: scale(0.97);
+    background-color: #cc6f00;
+}
+
+.signature-error {
+    color: red;
+    font-size: 13px;
+    margin-top: 6px;
 }
 
 /* Animation nhẹ */
