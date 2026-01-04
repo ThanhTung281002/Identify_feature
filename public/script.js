@@ -21,7 +21,7 @@ function showStep(i) {
 
 /* Next / Back */
 btnNext.onclick = () => {
-    // if (!validateStep(currentStep)) return;
+    if (!validateStep(currentStep)) return;
 
     // Nếu Step 3 → Step 4, fill dữ liệu
     if (currentStep === 2) {
