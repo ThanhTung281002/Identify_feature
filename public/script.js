@@ -16,12 +16,12 @@ function showStep(i) {
     btnBack.style.display = i === 0 ? "none" : "inline-block";
     btnNext.innerText = i === contents.length - 1 ? "Xác nhận" : "Tiếp theo";
 
-    if (i === 2) resizeCanvas(); // Step 3: canvas
+    // if (i === 2) resizeCanvas(); // Step 3: canvas
 }
 
 /* Next / Back */
 btnNext.onclick = () => {
-    if (!validateStep(currentStep)) return;
+    // if (!validateStep(currentStep)) return;
 
     // Nếu Step 3 → Step 4, fill dữ liệu
     if (currentStep === 2) {
@@ -58,40 +58,33 @@ function previewImage(input, id) {
 }
 
 /* Canvas chữ ký */
-const canvas = document.getElementById("signaturePad");
-const ctx = canvas.getContext("2d");
-let drawing = false;
+// const canvas = document.getElementById("signaturePad");
+// const ctx = canvas.getContext("2d");
+// let drawing = false;
 
-function resizeCanvas() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-}
+// function resizeCanvas() {
+//     canvas.width = canvas.offsetWidth;
+//     canvas.height = canvas.offsetHeight;
+// }
 
-canvas.addEventListener("mousedown", e => {
-    drawing = true;
-    ctx.beginPath();
-    ctx.moveTo(e.offsetX, e.offsetY);
-});
+// canvas.addEventListener("mousedown", e => {
+//     drawing = true;
+//     ctx.beginPath();
+//     ctx.moveTo(e.offsetX, e.offsetY);
+// });
 
-canvas.addEventListener("mousemove", e => {
-    if (!drawing) return;
-    ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.stroke();
-});
+// canvas.addEventListener("mousemove", e => {
+//     if (!drawing) return;
+//     ctx.lineTo(e.offsetX, e.offsetY);
+//     ctx.stroke();
+// });
 
-canvas.addEventListener("mouseup", () => drawing = false);
+// canvas.addEventListener("mouseup", () => drawing = false);
 
-function clearSignature() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
+// function clearSignature() {
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+// }
 
-function isCanvasEmpty(canvas) {
-    const blank = document.createElement("canvas");
-    blank.width = canvas.width;
-    blank.height = canvas.height;
-
-    return canvas.toDataURL() === blank.toDataURL();
-}
 
 /* Fill dữ liệu vào Step 4 */
 function fillReviewData() {
@@ -110,9 +103,6 @@ function fillReviewData() {
 
     if (signImg && signImg.src && signImg.src !== "") {
         reviewSign.src = signImg.src;
-        reviewSign.style.display = "block";
-    } else if (canvas && canvas.width > 0 && canvas.height > 0) {
-        reviewSign.src = canvas.toDataURL();
         reviewSign.style.display = "block";
     } else {
         reviewSign.style.display = "none";
@@ -161,11 +151,8 @@ function validateStep(stepIndex) {
 
         errorBox.innerText = "";
 
-        const hasImage = fileInput && fileInput.files.length > 0;
-        const hasSignature = !isCanvasEmpty(canvas);
-
-        if (!hasImage && !hasSignature) {
-            errorBox.innerText = "Vui lòng tải ảnh chữ ký hoặc ký trực tiếp!";
+        if (!fileInput || fileInput.files.length === 0) {
+            errorBox.innerText = "Vui lòng tải ảnh chữ ký!";
             return false;
         }
 
