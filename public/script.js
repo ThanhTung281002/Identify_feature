@@ -212,3 +212,43 @@ function showError(input, message) {
 }
 
 showStep(0);
+
+// ===== FAKE DATA (DEMO ONLY) =====
+const fakeUserData = {
+    fullName: "Nguyễn Văn An",
+    phone: "0912345678",
+    address: "123 Nguyễn Trãi, Quận 5, TP.HCM",
+    cccd: {
+        name: "Nguyễn Văn An",
+        number: "079203012345",
+        address: "123 Nguyễn Trãi, Quận 5, TP.HCM",
+        issueDate: "2021-08-15"
+    },
+    signImage: "https://dummyimage.com/400x200/000/fff&text=SIGNATURE"
+};
+
+function fillFakeData() {
+    const steps = document.querySelectorAll(".step-content");
+
+    // STEP 1
+    steps[0].querySelectorAll("input")[0].value = fakeUserData.fullName;
+    document.getElementById("phone").value = fakeUserData.phone;
+    steps[0].querySelectorAll("input")[2].value = fakeUserData.address;
+
+    // STEP 2
+    // document.getElementById("cccdName").value = fakeUserData.cccd.name;
+    // document.getElementById("cccdNumber").value = fakeUserData.cccd.number;
+    // document.getElementById("cccdAddress").value = fakeUserData.cccd.address;
+    // document.getElementById("cccdDate").value = fakeUserData.cccd.issueDate;
+
+    // STEP 4 (review)
+    // document.getElementById("reviewName").value = fakeUserData.fullName;
+    // document.getElementById("reviewCccd").value = fakeUserData.cccd.number;
+    // document.getElementById("reviewAddress").value = fakeUserData.address;
+    // document.getElementById("reviewSign").src = fakeUserData.signImage;
+}
+
+// ===== AUTO FILL FAKE DATA (DEV ONLY) =====
+window.addEventListener("DOMContentLoaded", () => {
+    fillFakeData();
+});
