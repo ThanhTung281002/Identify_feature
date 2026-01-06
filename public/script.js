@@ -114,26 +114,20 @@ function submitForm() {
     const form = document.getElementById("multiForm");
     const data = new FormData(form);
 
-    // Chuyển FormData sang JSON
-    const jsonData = Object.fromEntries(data.entries());
-
-    // Gửi dữ liệu lên server
     fetch("/submit", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(jsonData)
+        body: data // 🚀 GỬI TRỰC TIẾP FormData
     })
     .then(res => res.json())
     .then(resData => {
         console.log("Server trả về:", resData);
-        alert("Gửi thành công!");
-        // Reset form hoặc quay về step đầu nếu muốn
-        form.reset();
-        window.location.href = "success.html"; // chuyển sang trang success
-        currentStep = 0;
-        showStep(currentStep);
+
+        if (!resData.success) {
+            alert("Gửi thất bại!");
+            return;
+        }
+
+        window.location.href = "success.html";
     })
     .catch(err => {
         console.error("Lỗi gửi dữ liệu:", err);

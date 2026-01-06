@@ -21,19 +21,20 @@
         <div class="step">4</div>
     </div>
 
-    <form id="multiForm">
+    <form id="multiForm" enctype="multipart/form-data">
 
         <!-- STEP 1 -->
         <div class="step-content active">
             <h3>Bước 1: Cập nhật thông tin cá nhân</h3>
+
             <label>Họ tên</label>
-            <input type="text">
+            <input type="text" name="personal.fullName" required>
 
             <label>Số điện thoại</label>
-            <input type="text" id="phone">
+            <input type="text" id="phone" name="personal.phone" required>
 
             <label>Địa chỉ</label>
-            <input type="text">
+            <input type="text" name="personal.address" required>
         </div>
 
         <!-- STEP 2 -->
@@ -43,30 +44,35 @@
             <div class="cccd-row">
                 <div>
                     <label>Mặt trước</label>
-                    <input type="file" accept="image/*"
-                        onchange="previewImage(this,'frontPreview')">
+                    <input type="file"
+                           name="cccd.frontImage"
+                           accept="image/*"
+                           onchange="previewImage(this,'frontPreview')">
                     <img id="frontPreview" class="preview">
                 </div>
 
                 <div>
                     <label>Mặt sau</label>
-                    <input type="file" accept="image/*"
-                        onchange="previewImage(this,'backPreview')">
+                    <input type="file"
+                           name="cccd.backImage"
+                           accept="image/*"
+                           onchange="previewImage(this,'backPreview')">
                     <img id="backPreview" class="preview">
                 </div>
             </div>
+
             <div>
                 <label>Họ tên</label>
-                <input type="text" id="cccdName">
+                <input type="text" id="cccdName" name="cccd.fullName">
 
                 <label>Số căn cước công dân</label>
-                <input type="text" id="cccdNumber">
+                <input type="text" id="cccdNumber" name="cccd.number">
 
                 <label>Địa chỉ</label>
-                <input type="text" id="cccdAddress">
+                <input type="text" id="cccdAddress" name="cccd.address">
 
                 <label>Ngày cấp</label>
-                <input type="date" id="cccdDate">
+                <input type="date" id="cccdDate" name="cccd.issueDate">
             </div>
         </div>
 
@@ -75,21 +81,16 @@
             <h3>Bước 3: Cập nhật chữ ký</h3>
 
             <label>Tải lên hình ảnh chữ ký</label>
-            <input type="file" id="signImage" accept="image/*"
-                onchange="previewImage(this,'imgSign')">
+            <input
+            type="file"
+            id="signImage"
+            name="signature.image"
+            accept="image/*"
+            onchange="previewImage(this, 'imgSign')"
+            />
+            
             <img id="imgSign" class="preview-img">
-
-            <!-- <p>Ký trực tiếp (Tùy chọn)</p>
-            <div class="signature-box">
-                <canvas id="signaturePad"></canvas>
-            </div> -->
-
-            <!-- <button type="button" class="btn-danger" onclick="clearSignature()">
-                Xóa chữ ký
-            </button> -->
-
             <div class="signature-error"></div>
-
         </div>
 
         <!-- STEP 4 -->
@@ -97,7 +98,6 @@
             <h3>Xác nhận thông tin</h3>
             <p>Vui lòng kiểm tra lại thông tin trước khi gửi</p>
 
-            <!-- Hàng 1: Họ tên + CCCD -->
             <div class="review-row">
                 <div class="review-item">
                     <label>Họ tên</label>
@@ -109,19 +109,17 @@
                 </div>
             </div>
 
-            <!-- Hàng 2: Địa chỉ -->
             <div class="review">
                 <label>Địa chỉ</label>
                 <input type="text" id="reviewAddress" readonly>
             </div>
 
-            <!-- Hàng 3: Chữ ký -->
             <div class="review">
                 <label>Chữ ký</label>
                 <img id="reviewSign" class="preview-img">
             </div>
         </div>
-        
+
         <div class="buttons">
             <button id="btnBack" type="button">Quay lại</button>
             <button id="btnNext" type="button">Tiếp theo</button>
