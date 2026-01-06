@@ -44,19 +44,15 @@
             <div class="cccd-row">
                 <div>
                     <label>Mặt trước</label>
-                    <input type="file"
-                           name="cccd.frontImage"
-                           accept="image/*"
-                           onchange="previewImage(this,'frontPreview')">
+                    <input type="file" id="cccdFront" accept="image/*"
+                        onchange="previewImage(this,'frontPreview')">
                     <img id="frontPreview" class="preview">
                 </div>
 
                 <div>
                     <label>Mặt sau</label>
-                    <input type="file"
-                           name="cccd.backImage"
-                           accept="image/*"
-                           onchange="previewImage(this,'backPreview')">
+                    <input type="file" id="cccdBack" accept="image/*"
+                        onchange="previewImage(this,'backPreview')">
                     <img id="backPreview" class="preview">
                 </div>
             </div>

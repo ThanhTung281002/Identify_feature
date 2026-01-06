@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
+const axios = require("axios");
+const FormData = require("form-data");
 
 const app = express();
 const port = 3000;
@@ -28,7 +31,7 @@ const FormSchema = new mongoose.Schema(
     personal: {
       fullName: { type: String, required: true },
       phone: { type: String, required: true },
-      address: { type: String, required: true }
+      address1: { type: String, required: true }
     },
 
     // STEP 2
@@ -37,8 +40,7 @@ const FormSchema = new mongoose.Schema(
       backImage: String,
       fullName: String,
       number: String,
-      address: String,
-      issueDate: Date
+      address2: String,
     },
 
     // STEP 3
@@ -94,15 +96,12 @@ app.post(
         personal: {
           fullName: body["personal.fullName"],
           phone: body["personal.phone"],
-          address: body["personal.address"]
+          address1: body["personal.address"]
         },
         cccd: {
           fullName: body["cccd.fullName"],
           number: body["cccd.number"],
-          address: body["cccd.address"],
-          issueDate: body["cccd.issueDate"]
-            ? new Date(body["cccd.issueDate"])
-            : null,
+          address2: body["cccd.address"],
           frontImage: req.files?.["cccd.frontImage"]?.[0]?.path,
           backImage: req.files?.["cccd.backImage"]?.[0]?.path
         },
@@ -127,11 +126,63 @@ app.post(
   }
 );
 
-
 // ================= GET ALL (TEST) =================
 app.get("/forms", async (req, res) => {
   const data = await Form.find();
   res.json(data);
+});
+
+app.post('/ocr/cccd', upload.single('image'), async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ success: false, message: "Chưa có ảnh" });
+
+        const formData = new FormData();
+        formData.append('image', fs.createReadStream(req.file.path));
+
+        console.log("🚀 Đang gửi sang FPT.AI (v2)...");
+
+        // QUAN TRỌNG: URL phải có thêm "/extract" ở cuối
+        const fptResponse = await axios.post('https://api.fpt.ai/vision/idr/vnm', formData, {
+            headers: {
+                ...formData.getHeaders(),
+                'api-key': 'jcUPrsaYoCHl4xk84Oj0SpRJ8nRmIi1u'
+            },
+    timeout: 10000 // Chờ tối đa 10 giây
+        });
+
+        // Xóa file sau khi gửi thành công
+        if (fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
+
+        if (fptResponse.data && fptResponse.data.data && fptResponse.data.data.length > 0) {
+            const result = fptResponse.data.data[0];
+            console.log("✅ Nhận diện thành công:", result.name);
+
+            res.json({
+                success: true,
+                data: {
+                    hoTen: result.name || "",
+                    soCCCD: result.id || "",
+                    diaChi: result.address || "",
+                    ngayCap: result.issue_date || ""
+                }
+            });
+        } else {
+            res.json({ success: false, message: "AI không tìm thấy thông tin trên thẻ." });
+        }
+    } catch (err) {
+        // Xóa file nếu có lỗi xảy ra
+        if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
+        
+        // In chi tiết lỗi để kiểm tra
+        const errorDetail = err.response ? err.response.data : err.message;
+        console.error("❌ Lỗi API chi tiết:", errorDetail);
+        
+        res.status(500).json({ 
+            success: false, 
+            message: "Lỗi kết nối AI",
+            detail: errorDetail 
+        });
+    }
 });
 
 // ================= START SERVER =================
