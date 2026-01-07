@@ -24,6 +24,9 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB error:", err));
 
+
+
+
 // ================= SCHEMA =================
 const FormSchema = new mongoose.Schema(
   {
@@ -51,7 +54,15 @@ const FormSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+
+
+
 const Form = mongoose.model("Form", FormSchema);
+
+
+
+
+
 
 // ================= MULTER CONFIG =================
 const storage = multer.diskStorage({
@@ -126,6 +137,9 @@ app.post(
   }
 );
 
+
+
+
 // ================= GET ALL (TEST) =================
 app.get("/forms", async (req, res) => {
   const data = await Form.find();
@@ -184,6 +198,7 @@ app.post('/ocr/cccd', upload.single('image'), async (req, res) => {
         });
     }
 });
+
 
 // ================= START SERVER =================
 app.listen(port, () => {
