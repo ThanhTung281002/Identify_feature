@@ -1,3 +1,8 @@
-# Identify-SW
-# Step1: cd ./Identiiy-SW
-# Step2: run command line node server.js in terminal
+## Identify Service (FastAPI)
+
+### Run server
+```bash
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
